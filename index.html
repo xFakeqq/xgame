@@ -99,29 +99,46 @@
         }
         .btn-secondary:hover { background: rgba(200,168,130,0.2); border-color: rgba(200,168,130,0.4); }
 
+        /* ===== STYLE DADU 3D KOTAK ===== */
         .dice-container {
-            width: clamp(56px, 12vw, 80px); aspect-ratio: 1;
-            perspective: 300px; cursor: pointer; margin: 0 auto;
+            width: clamp(60px, 14vw, 80px); aspect-ratio: 1;
+            perspective: 400px; cursor: pointer; margin: 0 auto;
         }
-        .dice {
-            width: 100%; height: 100%;
-            background: linear-gradient(145deg, #FFF, #E8E8E8);
-            border-radius: 14px; display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(3,1fr);
-            padding: 14%; gap: 2px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.8);
+        .dice-3d {
+            width: 100%; height: 100%; position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
         }
-        .dice.rolling { 
-            animation: diceRoll 0.3s linear infinite; /* Dipercepat sedikit biar kejelian tangan lebih terasa */
+        .dice-3d.rolling {
+            animation: spinDice 1.2s linear infinite;
         }
-        @keyframes diceRoll {
-            0% { transform: rotateX(0) rotateY(0) rotateZ(0) scale(0.9); }
-            25% { transform: rotateX(180deg) rotateY(90deg) rotateZ(90deg) scale(1.1); }
-            50% { transform: rotateX(360deg) rotateY(180deg) rotateZ(180deg) scale(0.95); }
-            75% { transform: rotateX(540deg) rotateY(270deg) rotateZ(270deg) scale(1.1); }
-            100% { transform: rotateX(720deg) rotateY(360deg) rotateZ(360deg) scale(1); }
+        @keyframes spinDice {
+            0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg); }
         }
-        .dot { width: 100%; height: 100%; border-radius: 50%; background: transparent; transition: background 0.1s; }
-        .dot.active { background: #2C2C2C; box-shadow: inset 0 2px 3px rgba(0,0,0,0.4); }
+        .face {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(145deg, #FFFFFF, #E0E0E0);
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 12px;
+            display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr);
+            padding: 12%; gap: 4px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+        .f1 { transform: translateZ(50%); }
+        .f6 { transform: rotateY(180deg) translateZ(50%); }
+        .f2 { transform: rotateY(90deg) translateZ(50%); }
+        .f5 { transform: rotateY(-90deg) translateZ(50%); }
+        .f3 { transform: rotateX(90deg) translateZ(50%); }
+        .f4 { transform: rotateX(-90deg) translateZ(50%); }
+        .face .dot {
+            width: 100%; height: 100%; border-radius: 50%;
+            background: transparent; align-self: center; justify-self: center;
+        }
+        .face .dot.active {
+            background: #2C2C2C;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
 
         .player-badge {
             display: flex; align-items: center; gap: 8px;
@@ -359,10 +376,37 @@
                     <div class="dice-info">
                         <div class="turn-text" id="g-turn" style="color:var(--accent-gold);">Giliranmu!</div>
                         <div class="dice-container" id="dice-wrap" onclick="G.rollDice()">
-                            <div class="dice" id="dice">
-                                <div class="dot" data-p="1"></div><div class="dot" data-p="2"></div><div class="dot" data-p="3"></div>
-                                <div class="dot" data-p="4"></div><div class="dot" data-p="5"></div><div class="dot" data-p="6"></div>
-                                <div class="dot" data-p="7"></div><div class="dot" data-p="8"></div><div class="dot" data-p="9"></div>
+                            <div class="dice-3d" id="dice">
+                                <div class="face f1">
+                                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                                    <div class="dot"></div><div class="dot active"></div><div class="dot"></div>
+                                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                                </div>
+                                <div class="face f2">
+                                    <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+                                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                                    <div class="dot"></div><div class="dot"></div><div class="dot active"></div>
+                                </div>
+                                <div class="face f3">
+                                    <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+                                    <div class="dot"></div><div class="dot active"></div><div class="dot"></div>
+                                    <div class="dot"></div><div class="dot"></div><div class="dot active"></div>
+                                </div>
+                                <div class="face f4">
+                                    <div class="dot active"></div><div class="dot"></div><div class="dot active"></div>
+                                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                                    <div class="dot active"></div><div class="dot"></div><div class="dot active"></div>
+                                </div>
+                                <div class="face f5">
+                                    <div class="dot active"></div><div class="dot"></div><div class="dot active"></div>
+                                    <div class="dot"></div><div class="dot active"></div><div class="dot"></div>
+                                    <div class="dot active"></div><div class="dot"></div><div class="dot active"></div>
+                                </div>
+                                <div class="face f6">
+                                    <div class="dot active"></div><div class="dot"></div><div class="dot active"></div>
+                                    <div class="dot active"></div><div class="dot"></div><div class="dot active"></div>
+                                    <div class="dot active"></div><div class="dot"></div><div class="dot active"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -437,7 +481,7 @@
         let lastRoomSnap = null;
         let localAnimating = false;
         let prevPositions = {};
-        let currentDiceValue = 1; // Variabel untuk menyimpan angka dadu yang sedang tampil di layar
+        let currentDiceValue = 1; // Variabel untuk menyimpan angka dadu yang sedang ditampilkan di layar
 
         /* ===== Inisialisasi Firebase ===== */
         try {
@@ -530,15 +574,25 @@
             }
         }
 
-        /* ===== Tampilkan nilai dadu di UI ===== */
+        /* ===== Fungsi memutar sisi dadu 3D ===== */
+        const DICE_ROTATIONS = {
+            1: { x: 0,   y: 0   },
+            2: { x: 0,   y: -90 },
+            3: { x: -90, y: 0   },
+            4: { x: 90,  y: 0   },
+            5: { x: 0,   y: 90  },
+            6: { x: 0,   y: 180 }
+        };
+
+        /* ===== Tampilkan nilai dadu di UI 3D ===== */
         function dice(v) {
-            currentDiceValue = v; // Simpan nilai yang sedang ditampilkan
-            document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
-            const p = { 1:[5], 2:[3,7], 3:[3,5,7], 4:[1,3,7,9], 5:[1,3,5,7,9], 6:[1,3,4,6,7,9] };
-            (p[v] || []).forEach(n => {
-                const d = document.querySelector(`.dot[data-p="${n}"]`);
-                if (d) d.classList.add('active');
-            });
+            currentDiceValue = v; // Simpan nilai yang sedang ditampilkan untuk keperluan "Stop"
+            const diceEl = document.getElementById('dice');
+            const rot = DICE_ROTATIONS[v] || DICE_ROTATIONS[1];
+            // Jika sedang rolling, biarkan CSS animation yang mengatur rotasi putar
+            if (!rolling) {
+                diceEl.style.transform = `rotateX(${rot.x}deg) rotateY(${rot.y}deg)`;
+            }
         }
 
         /* ===== Tambah log permainan ===== */
@@ -1294,8 +1348,8 @@
         }
 
         /* ============================================================
-         *  ★ FITUR SKILL: Dadu berputar cepat, hasil diambil dari 
-         *  angka yang sedang ditampilkan di layar saat tombol Stop ditekan.
+         *  ★ FITUR SKILL: Dadu 3D berputar pelan (180ms), hasil diambil 
+         *  dari angka yang sedang ditampilkan di layar saat tombol Stop ditekan.
          * ============================================================ */
         async function rollDice() {
             if (!rid || !myId || localAnimating) return;
@@ -1319,16 +1373,17 @@
                 load('btn-roll', false); // hapus state loading spinner dulu
 
                 const diceEl = document.getElementById('dice');
+                diceEl.style.transform = ''; // Hapus transformasi manual agar CSS animation bisa berjalan
                 diceEl.classList.add('rolling');
                 
                 // Ubah tombol menjadi Stop
                 const btnText = document.querySelector('#btn-roll .btn-text');
                 if (btnText) btnText.innerHTML = '<i class="fas fa-hand-paper"></i> Stop!';
                 
-                // Looping mengganti titik dadu secara visual SANGAT CEPAT (150ms)
+                // Looping mengganti angka dadu secara visual (180ms = pelan, bisa dilihat jelas oleh mata)
                 window._rollIv = setInterval(() => {
-                    dice(Math.floor(Math.random() * 6) + 1);
-                }, 60);
+                    currentDiceValue = Math.floor(Math.random() * 6) + 1;
+                }, 180);
                 return; // Berhenti di sini, tunggu pemain klik lagi
             }
 
@@ -1345,9 +1400,12 @@
 
                 /* 
                   AMBIL HASIL DADU MURNI DARI ANGKA YANG SEDANG TAMPIL DI LAYAR!
-                  Inilah yang membuat kecepatan tangan dan mata pemain berperan.
+                  currentDiceValue adalah angka terakhir yang muncul sebelum tombol stop di klik.
                 */
                 const result = currentDiceValue || 1;
+                
+                // Putar dadu 3D secara halus ke sisi angka hasil
+                dice(result);
 
                 const cp = players[myId];
                 const fromPos = cp.position || 0;
