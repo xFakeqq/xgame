@@ -1325,7 +1325,7 @@
                 const btnText = document.querySelector('#btn-roll .btn-text');
                 if (btnText) btnText.innerHTML = '<i class="fas fa-hand-paper"></i> Stop!';
                 
-                // Looping mengganti titik dadu secara visual SANGAT CEPAT (60ms)
+                // Looping mengganti titik dadu secara visual SANGAT CEPAT (150ms)
                 window._rollIv = setInterval(() => {
                     dice(Math.floor(Math.random() * 6) + 1);
                 }, 60);
